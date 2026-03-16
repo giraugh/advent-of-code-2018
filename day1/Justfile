@@ -1,0 +1,4 @@
+run:
+    rm ./solve.wasm
+    wasm-tools parse ./solve.wat -o ./solve.wasm
+    node --experimental_strip_types solve.mts
