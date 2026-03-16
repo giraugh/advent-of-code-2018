@@ -14,46 +14,29 @@
     (func $stoi (param $off i32) (param $len i32) (result i32)
         (local $total i32)
         (local $index i32)
-        (local $pow i32)
 
-        ;; Init pow
-        i32.const 1
-        local.set $pow
         i32.const 0
-        local.set $index
-        i32.const 0
+        local.tee $index
         local.set $total
 
         ;; Start at the end
         loop $loop
             ;; Get the byte at $index back from the end
             local.get $off
-            local.get $len
             local.get $index
-            i32.sub
             i32.add
-            i32.const 1
-            i32.sub
             i32.load8_u
 
             ;; Convert from char to decimal
             global.get $ZERO_CHAR
             i32.sub
 
-            ;; Multiply by our current power
-            local.get $pow
-            i32.mul
-
             ;; Add to running
             local.get $total
-            i32.add
-            local.set $total
-
-            ;; Increase power
-            local.get $pow
             i32.const 10
             i32.mul
-            local.set $pow
+            i32.add
+            local.set $total
 
             ;; At end of len?
             local.get $index
@@ -164,7 +147,7 @@
                 local.get $list_off
                 i32.sub
                 local.get $list_len
-                i32.gt_u
+                i32.ge_u
                 br_if $block
 
                 ;; Is the item here the target item?
@@ -197,8 +180,6 @@
         ;; Add to end of list
         local.get $list_off
         local.get $list_len
-        i32.add
-        i32.const 4
         i32.add
         local.get $val
         i32.store ;; this sig is a guess
