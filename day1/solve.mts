@@ -15,6 +15,10 @@ function logx(value: number) {
     console.log("(", value, ")");
 }
 
+function logs() {
+    console.log("---");
+}
+
 // Load and compile the wasm
 const moduleBytes = await readFile("./solve.wasm");
 const module = new WebAssembly.Module(moduleBytes);
@@ -23,6 +27,7 @@ const instance = new WebAssembly.Instance(module, {
         mem,
         log,
         logx,
+        logs,
     },
 });
 
@@ -36,5 +41,8 @@ const len = inputBytes.length;
 memView.set(inputBytes, offset);
 
 // Run the solve
-const out = instance.exports.solve(offset, len);
-console.log("->", out);
+const out1 = instance.exports.solve_part1(offset, len);
+console.log("->", out1);
+
+const out2 = instance.exports.solve_part2(offset, len);
+console.log("->", out2);
